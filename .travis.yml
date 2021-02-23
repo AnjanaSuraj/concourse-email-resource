@@ -13,17 +13,17 @@ script: true
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" AND "${TRAVIS_CPU_ARCH}" == "arm64"]; then
-      print("building arm64 anjana/concourse-email-resource_arm64")
+      echo "building arm64 anjana/concourse-email-resource_arm64";
       docker build -t anjana/concourse-email-resource_arm64 .;
-      print("logging in arm64 anjana/concourse-email-resource_arm64")
+      echo "logging in arm64 anjana/concourse-email-resource_arm64";
       docker login -u="anjanasuraj" -p="Orca@12345";
-      print("pushing arm64 anjana/concourse-email-resource_arm64")
+      echo "pushing arm64 anjana/concourse-email-resource_arm64";
       docker push anjana/concourse-email-resource_arm64;
     else
-      print("building amd64 anjana/concourse-email-resource")
+      echo "building amd64 anjana/concourse-email-resource";
       docker build -t anjana/concourse-email-resource .;
-      print("loging in amd64 anjana/concourse-email-resource")
+      echo "loging in amd64 anjana/concourse-email-resource";
       docker login -u="anjanasuraj" -p="Orca@12345";
-      print("pushing amd64 anjana/concourse-email-resource")
+      echo "pushing amd64 anjana/concourse-email-resource";
       docker push anjana/concourse-email-resource;
     fi
