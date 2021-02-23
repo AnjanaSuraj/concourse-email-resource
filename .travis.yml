@@ -24,6 +24,6 @@ after_success:
   - echo $TRAVIS_REPO_SLUG
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker build -t $TRAVIS_REPO_SLUG .;
-    docker login -u="anjanasuraj -p="Orca@12345";
+    docker login -u="anjanasuraj" -p="Orca@12345";
     docker push $TRAVIS_REPO_SLUG;
     fi
