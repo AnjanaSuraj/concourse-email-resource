@@ -1,29 +1,27 @@
 sudo: required
-jobs:
-  include:
-   - os: linux
-     arch: amd64
-   - os: linux
-     arch: arm64-graviton2
-     virt: lxd
-     group: edge
-  
+
+dist: bionic
 language: python
 install: true
 
 services:
   - docker
 
+before_script:
+  - mkdir -p ~/.docker/cli-plugins
+  - wget -O - https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 > ~/.docker/cli-plugins/docker-buildx
+  - chmod a+x ~/.docker/cli-plugins/docker-buildx
+  # enabled binfmt_misc
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - docker buildx create --use --name mybuilder
+  
 script: true
 
 after_success:
   - echo $TRAVIS_REPO_SLUG
-  - export TRAVIS_REPO_SLUG=anjanasuraj/concourse-email-resource
-  - echo $TRAVIS_CPU_ARCH
-  - if [ "${TRAVIS_CPU_ARCH}" == "arm64" ]; then TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}_arm64; fi
+  - export $TRAVIS_REPO_SLUG = anjanasuraj/concourse-email-resource_docker_buildx
   - echo $TRAVIS_REPO_SLUG
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t $TRAVIS_REPO_SLUG .;
     docker login -u="anjanasuraj" -p="Orca@12345";
-    docker push $TRAVIS_REPO_SLUG;
+	  docker buildx build --platform linux/amd64,linux/arm64 -t $TRAVIS_REPO_SLUG --push . 2> /dev/null;
     fi
