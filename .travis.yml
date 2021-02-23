@@ -12,18 +12,24 @@ services:
 script: true
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" AND "${TRAVIS_CPU_ARCH}" == "arm64"]; then
-      echo "building arm64 anjana/concourse-email-resource_arm64";
-      docker build -t anjana/concourse-email-resource_arm64 .;
-      echo "logging in arm64 anjana/concourse-email-resource_arm64";
-      docker login -u="anjanasuraj" -p="Orca@12345";
-      echo "pushing arm64 anjana/concourse-email-resource_arm64";
-      docker push anjana/concourse-email-resource_arm64;
-    else
-      echo "building amd64 anjana/concourse-email-resource";
-      docker build -t anjana/concourse-email-resource .;
-      echo "loging in amd64 anjana/concourse-email-resource";
-      docker login -u="anjanasuraj" -p="Orca@12345";
-      echo "pushing amd64 anjana/concourse-email-resource";
-      docker push anjana/concourse-email-resource;
+  - if [ "$TRAVIS_BRANCH" == "master"]; then
+		case "${TRAVIS_CPU_ARCH}" in 
+			"arm64")
+				echo "building arm64 anjana/concourse-email-resource_arm64";
+				docker build -t anjana/concourse-email-resource_arm64 .;
+				echo "logging in arm64 anjana/concourse-email-resource_arm64";
+				docker login -u="anjanasuraj" -p="Orca@12345";
+				echo "pushing arm64 anjana/concourse-email-resource_arm64";
+				docker push anjana/concourse-email-resource_arm64;
+				;;
+			"amd64")
+				echo "building amd64 anjana/concourse-email-resource";
+				docker build -t anjana/concourse-email-resource .;
+				echo "loging in amd64 anjana/concourse-email-resource";
+				docker login -u="anjanasuraj" -p="Orca@12345";
+				echo "pushing amd64 anjana/concourse-email-resource";
+				docker push anjana/concourse-email-resource;
+				;;
+		esac
+	  
     fi
