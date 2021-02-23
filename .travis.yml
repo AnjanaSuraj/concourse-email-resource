@@ -7,6 +7,9 @@ install: true
 services:
   - docker
 
+install:
+  - sudo curl -sSL https://get.docker.com/ | sh
+
 before_script:
   - mkdir -p ~/.docker/cli-plugins
   - wget -O - https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 > ~/.docker/cli-plugins/docker-buildx
