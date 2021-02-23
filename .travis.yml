@@ -22,7 +22,7 @@ script: true
 
 after_success:
   - echo $TRAVIS_REPO_SLUG
-  - export $TRAVIS_REPO_SLUG = anjanasuraj/concourse-email-resource_docker_buildx
+  - export $TRAVIS_REPO_SLUG=anjanasuraj/concourse-email-resource_docker_buildx
   - echo $TRAVIS_REPO_SLUG
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="anjanasuraj" -p="Orca@12345";
