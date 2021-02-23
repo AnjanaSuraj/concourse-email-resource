@@ -26,5 +26,6 @@ after_success:
   - echo $TRAVIS_REPO_SLUG
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="anjanasuraj" -p="Orca@12345";
+    docker build -t $TRAVIS_REPO_SLUG .;
     docker buildx build --platform linux/amd64,linux/arm64 -t $TRAVIS_REPO_SLUG --push . 2> /dev/null;
     fi
